@@ -957,6 +957,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2119967834 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 397380708803161207, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
+  m_PrefabInstance: {fileID: 8645899843202137982}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23644c6f78a6e4d46b6593b1a552b190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8645899843202137982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -965,6 +976,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8645899841946968035, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8645899843013226009, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2119967834}
+    - target: {fileID: 8645899843013226009, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2119967834}
+    - target: {fileID: 8645899843013226009, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnMoveInput
+      objectReference: {fileID: 0}
+    - target: {fileID: 8645899843013226009, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnJumpInput
+      objectReference: {fileID: 0}
+    - target: {fileID: 8645899843013226009, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerInputHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8645899843013226009, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerInputHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8645899843013226011, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -1012,6 +1051,14 @@ PrefabInstance:
     - target: {fileID: 8645899843013226017, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
       propertyPath: m_Name
       value: Ardevid (Player)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8645899843013226017, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8645899843013226017, guid: 26a964efaa022dc4aa2b6a79e6696df6, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

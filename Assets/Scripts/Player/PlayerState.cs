@@ -8,9 +8,10 @@ public class PlayerState
     protected PlayerStateMachine playerStateMachine;
     protected PlayerData playerData;
 
+    protected float startTime;
     private string animBoolName;
 
-    public PlayerState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animNameBool)
+    public PlayerState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animBoolName)
     {
         this.player = player;
         this.playerStateMachine = playerStateMachine;
@@ -21,13 +22,13 @@ public class PlayerState
     public virtual void Enter()
     {
         DoChecks();
-        // Spuštìní animace
-
+        player.Anim.SetBool(animBoolName, true);
+        startTime = Time.time;
     }
 
     public virtual void Exit()
     {
-
+        player.Anim.SetBool(animBoolName, false);
     }
 
     public virtual void LogicUpdate()
