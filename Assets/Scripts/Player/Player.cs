@@ -10,8 +10,12 @@ public class Player : MonoBehaviour
 
     public PlayerIdleState IdleState { get; private set; }
     public PlayerMoveState MoveState { get; private set; }
+    public PlayerJumpState JumpState { get; private set; }
+    public PlayerFallState FallState { get; private set; }
 
-    [SerializeField] private PlayerData playerData;
+    public float moveVelocity = 10f;
+    public float jumpVelocity = 10f;
+
     #endregion
 
     #region Components
@@ -25,14 +29,21 @@ public class Player : MonoBehaviour
     public int FacingDirection { get; private set; }
 
     [SerializeField] private Vector2 workspace;
+
+    [Header("Ground System")]
+    [SerializeField] private Transform groundedCheck;
+    [SerializeField] private Vector2 groundedCheckScale;
+    [SerializeField] private LayerMask groundMask;
     #endregion
 
     private void Awake()
     {
         StateMachine = new PlayerStateMachine();
 
-        IdleState = new PlayerIdleState(this, StateMachine, playerData, "idle");
-        MoveState = new PlayerMoveState(this, StateMachine, playerData, "move");
+        IdleState = new PlayerIdleState(this, StateMachine, "idle");
+        MoveState = new PlayerMoveState(this, StateMachine, "move");
+        JumpState = new PlayerJumpState(this, StateMachine, "jump");
+        FallState = new PlayerFallState(this, StateMachine, "fall");
     }
 
     private void Start()
@@ -64,15 +75,33 @@ public class Player : MonoBehaviour
         CurrentVelocity = workspace;
     }
 
+    public void SetVelocityY(float velocity)
+    {
+        workspace.Set(CurrentVelocity.x, velocity);
+        RB.velocity = workspace;
+        CurrentVelocity = workspace;
+    }
+
     public void CheckIfShouldFlip(int xInput)
     {
         if(xInput != 0 && xInput != FacingDirection)
             Flip();
     }
 
+    public bool CheckIfTouchingGround()
+    {
+        return Physics2D.OverlapBox(groundedCheck.position, groundedCheckScale, 0, groundMask);
+    }
+
     private void Flip()
     {
         FacingDirection *= -1;
         transform.Rotate(0.0f, 180.0f, 0.0f);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(groundedCheck.position, groundedCheckScale);
     }
 }

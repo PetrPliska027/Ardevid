@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMoveState : PlayerGroundedState
+public class PlayerFallState : PlayerState
 {
-    public PlayerMoveState(Player player, PlayerStateMachine playerStateMachine, string animNameBool) : base(player, playerStateMachine, animNameBool)
+    protected int xInput;
+    public PlayerFallState(Player player, PlayerStateMachine playerStateMachine, string animBoolName) : base(player, playerStateMachine, animBoolName)
     {
 
+    }
+
+    public override void DoChecks()
+    {
+        base.DoChecks();
     }
 
     public override void Enter()
@@ -23,21 +29,23 @@ public class PlayerMoveState : PlayerGroundedState
     {
         base.LogicUpdate();
 
+        xInput = player.InputHandler.NormalizedInputX;
+
         player.CheckIfShouldFlip(xInput);
 
         player.SetVelocityX(player.moveVelocity * xInput);
 
-        if(xInput == 0)
+        if (player.CheckIfTouchingGround())
+        {
+            player.InputHandler.UseJumpInput();
             playerStateMachine.ChangeState(player.IdleState);
+        }
+
+        
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-    }
-
-    public override void DoChecks()
-    {
-        base.DoChecks();
     }
 }

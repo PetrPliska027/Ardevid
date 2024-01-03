@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerGroundedState : PlayerState
 {
     protected int xInput;
-    public PlayerGroundedState(Player player, PlayerStateMachine playerStateMachine, PlayerData playerData, string animNameBool) : base(player, playerStateMachine, playerData, animNameBool)
+    protected bool jumpPressed;
+    public PlayerGroundedState(Player player, PlayerStateMachine playerStateMachine, string animNameBool) : base(player, playerStateMachine, animNameBool)
     {
         
     }
@@ -25,6 +26,18 @@ public class PlayerGroundedState : PlayerState
         base.LogicUpdate();
 
         xInput = player.InputHandler.NormalizedInputX;
+
+        jumpPressed = player.InputHandler.JumpInput;
+  
+        if(jumpPressed && player.CheckIfTouchingGround()) 
+        {
+            player.InputHandler.UseJumpInput();
+            playerStateMachine.ChangeState(player.JumpState);
+        }
+        else if (!player.CheckIfTouchingGround())
+        {
+            playerStateMachine.ChangeState(player.FallState);
+        }
     }
 
     public override void PhysicsUpdate()
