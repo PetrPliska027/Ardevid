@@ -45,8 +45,8 @@ Tilemap:
   - first: {x: -1, y: 0, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 46
-      m_TileSpriteIndex: 46
+      m_TileIndex: 45
+      m_TileSpriteIndex: 45
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -505,7 +505,7 @@ Tilemap:
   - first: {x: 8, y: 10, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 47
+      m_TileIndex: 46
       m_TileSpriteIndex: 36
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
@@ -604,8 +604,6 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: a2d773d65232c3e438c5b3306f30d36e, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 3554b97d0b5ca7d41959eb87a5b6f7c0, type: 2}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 14c3af021712c73438be12ebbc211ffc, type: 2}
   - m_RefCount: 1
@@ -701,8 +699,6 @@ Tilemap:
     m_Data: {fileID: 91221321, guid: 8460ffff5035f334db0bea47683b043a, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 1868149728, guid: 8460ffff5035f334db0bea47683b043a, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: -871568219, guid: 8460ffff5035f334db0bea47683b043a, type: 3}
   m_TileMatrixArray:
@@ -811,7 +807,7 @@ GameObject:
   - component: {fileID: 7376822708448166681}
   - component: {fileID: 1342599395289586882}
   m_Layer: 0
-  m_Name: Temple
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -845,7 +841,7 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &6731852069978971663
+--- !u!114 &354961634659049074
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
