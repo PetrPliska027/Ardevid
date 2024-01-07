@@ -27,4 +27,9 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     public void UseJumpInput() => JumpInput = false;
+
+    public void OnInteractInput(InputAction.CallbackContext context)
+    {
+
+    }
 }
