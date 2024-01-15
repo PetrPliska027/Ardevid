@@ -16,6 +16,7 @@ public class ObjectMoverEditor : Editor
         {
             objectMover.CreatePoint();
             Selection.activeObject = objectMover.points[objectMover.points.Count - 1];
+            PrefabUtility.RecordPrefabInstancePropertyModifications(objectMover);
         }
 
         // Zkontroluj, zda existují body pøed zobrazením tlaèítka "Delete Point"

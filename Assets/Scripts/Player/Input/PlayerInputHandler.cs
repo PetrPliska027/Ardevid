@@ -9,6 +9,7 @@ public class PlayerInputHandler : MonoBehaviour
     public int NormalizedInputX { get; private set; }
     public int NormalizedInputY { get; private set; }
     public bool JumpInput { get; private set; }
+    public bool InteractInput { get; private set; }
 
     public void OnMoveInput(InputAction.CallbackContext context)
     {
@@ -30,6 +31,11 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnInteractInput(InputAction.CallbackContext context)
     {
-
+        if (context.started)
+        {
+            InteractInput = true;
+        }
     }
+
+    public void UseInteractInput() => InteractInput = false;
 }

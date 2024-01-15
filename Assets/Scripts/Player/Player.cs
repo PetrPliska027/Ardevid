@@ -82,6 +82,11 @@ public class Player : MonoBehaviour
         CurrentVelocity = workspace;
     }
 
+    public void InteractWithObject()
+    {
+        Debug.Log("Interact");
+    }
+
     public void CheckIfShouldFlip(int xInput)
     {
         if(xInput != 0 && xInput != FacingDirection)
