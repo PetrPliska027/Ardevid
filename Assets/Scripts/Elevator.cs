@@ -34,7 +34,7 @@ public class Elevator : MonoBehaviour, IInteractable
     {
         if (player != null)
         {
-            yInput = player.InputHandler.NormalizedInputY;
+            yInput = player.inputHandler.NormalizedInputY;
 
             if (yInput == 1)
             {

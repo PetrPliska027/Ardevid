@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerGroundedState
 {
-    public PlayerIdleState(Player player, PlayerStateMachine playerStateMachine, string animNameBool) : base(player, playerStateMachine, animNameBool)
+    private Player player => (Player)entity;
+    public PlayerIdleState(Player player, StateMachine stateMachine, string animNameBool) : base(player, stateMachine, animNameBool)
     {
 
     }
@@ -25,16 +26,11 @@ public class PlayerIdleState : PlayerGroundedState
         base.LogicUpdate();
 
         if(xInput != 0)
-            playerStateMachine.ChangeState(player.MoveState);           
+            stateMachine.ChangeState(player.moveState);           
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-    }
-
-    public override void DoChecks()
-    {
-        base.DoChecks();
     }
 }

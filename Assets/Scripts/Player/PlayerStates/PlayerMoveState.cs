@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerMoveState : PlayerGroundedState
 {
-    public PlayerMoveState(Player player, PlayerStateMachine playerStateMachine, string animNameBool) : base(player, playerStateMachine, animNameBool)
+    private Player player => (Player)entity;
+    public PlayerMoveState(Player player, StateMachine stateMachine, string animNameBool) : base(player, stateMachine, animNameBool)
     {
 
     }
@@ -28,16 +29,11 @@ public class PlayerMoveState : PlayerGroundedState
         player.SetVelocityX(player.moveVelocity * xInput);
 
         if(xInput == 0)
-            playerStateMachine.ChangeState(player.IdleState);
+            stateMachine.ChangeState(player.idleState);
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-    }
-
-    public override void DoChecks()
-    {
-        base.DoChecks();
     }
 }

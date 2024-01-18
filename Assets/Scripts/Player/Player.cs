@@ -1,85 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
-    #region State Variables
-    public PlayerStateMachine StateMachine { get; private set; }
-
-    public PlayerIdleState IdleState { get; private set; }
-    public PlayerMoveState MoveState { get; private set; }
-    public PlayerJumpState JumpState { get; private set; }
-    public PlayerFallState FallState { get; private set; }
+    public PlayerIdleState idleState { get; private set; }
+    public PlayerMoveState moveState { get; private set; }
+    public PlayerJumpState jumpState { get; private set; }
+    public PlayerFallState fallState { get; private set; }
 
     public float moveVelocity = 10f;
     public float jumpVelocity = 10f;
 
-    #endregion
-
-    #region Components
-    public Animator Anim { get; private set; }
-    public PlayerInputHandler InputHandler { get; private set; }
-    public Rigidbody2D RB { get; private set; }
-    #endregion
-
-    #region Other Variables
-    public Vector2 CurrentVelocity { get; private set; }
-    public int FacingDirection { get; private set; }
-
-    [SerializeField] private Vector2 workspace;
+    public PlayerInputHandler inputHandler { get; private set; }
 
     [Header("Ground System")]
     [SerializeField] private Transform groundedCheck;
     [SerializeField] private Vector2 groundedCheckScale;
     [SerializeField] private LayerMask groundMask;
-    #endregion
 
-    private void Awake()
+    public override void Awake()
     {
-        StateMachine = new PlayerStateMachine();
+        base.Awake();
 
-        IdleState = new PlayerIdleState(this, StateMachine, "idle");
-        MoveState = new PlayerMoveState(this, StateMachine, "move");
-        JumpState = new PlayerJumpState(this, StateMachine, "jump");
-        FallState = new PlayerFallState(this, StateMachine, "fall");
+        idleState = new PlayerIdleState(this, stateMachine, "idle");
+        moveState = new PlayerMoveState(this, stateMachine, "move");
+        jumpState = new PlayerJumpState(this, stateMachine, "jump");
+        fallState = new PlayerFallState(this, stateMachine, "fall");
     }
 
-    private void Start()
+    public override void Start()
     {
-        Anim = GetComponent<Animator>();
-        InputHandler = GetComponent<PlayerInputHandler>();
-        RB = GetComponent<Rigidbody2D>();
+        base.Start();
 
-        FacingDirection = 1;
+        inputHandler = GetComponent<PlayerInputHandler>();
 
-        StateMachine.Initialize(IdleState);
+        stateMachine.Initialize(idleState);
     }
 
-    private void Update()
+    public override void Update()
     {
-        CurrentVelocity = RB.velocity;
-        StateMachine.CurrentState.LogicUpdate();
+        base.Update();
     }
 
-    private void FixedUpdate()
+    public override void FixedUpdate()
     {
-        StateMachine.CurrentState.PhysicsUpdate();
+        base.FixedUpdate();
     }
 
-    public void SetVelocityX(float velocity)
+    public override void SetVelocityX(float velocity)
     {
-        workspace.Set(velocity, CurrentVelocity.y);
-        RB.velocity = workspace;
-        CurrentVelocity = workspace;
+        base.SetVelocityX(velocity);
     }
 
-    public void SetVelocityY(float velocity)
+    public override void SetVelocityY(float velocity)
     {
-        workspace.Set(CurrentVelocity.x, velocity);
-        RB.velocity = workspace;
-        CurrentVelocity = workspace;
+        base.SetVelocityY(velocity);
     }
 
     public void InteractWithObject()
@@ -87,21 +63,9 @@ public class Player : MonoBehaviour
         Debug.Log("Interact");
     }
 
-    public void CheckIfShouldFlip(int xInput)
-    {
-        if(xInput != 0 && xInput != FacingDirection)
-            Flip();
-    }
-
     public bool CheckIfTouchingGround()
     {
         return Physics2D.OverlapBox(groundedCheck.position, groundedCheckScale, 0, groundMask);
-    }
-
-    private void Flip()
-    {
-        FacingDirection *= -1;
-        transform.Rotate(0.0f, 180.0f, 0.0f);
     }
 
     private void OnDrawGizmosSelected()

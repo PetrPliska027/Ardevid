@@ -26,12 +26,12 @@ public class Button : MonoBehaviour, IInteractable
     {
         if (player != null)
         {
-            interactPressed = player.InputHandler.InteractInput;
+            interactPressed = player.inputHandler.InteractInput;
 
             if (interactPressed)
             {
                 Interact();
-                player.InputHandler.UseInteractInput();
+                player.inputHandler.UseInteractInput();
             }
         }
     }

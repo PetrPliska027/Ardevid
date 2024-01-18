@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class PlayerJumpState : PlayerGroundedState
 {
-    public PlayerJumpState(Player player, PlayerStateMachine playerStateMachine, string animNameBool) : base(player, playerStateMachine, animNameBool)
+    private Player player => (Player)entity;
+    public PlayerJumpState(Player player, StateMachine stateMachine, string animNameBool) : base(player, stateMachine, animNameBool)
     {
 
-    }
-
-    public override void DoChecks()
-    {
-        base.DoChecks();
     }
 
     public override void Enter()
@@ -30,7 +26,7 @@ public class PlayerJumpState : PlayerGroundedState
     {
         base.LogicUpdate();
 
-        xInput = player.InputHandler.NormalizedInputX;
+        xInput = player.inputHandler.NormalizedInputX;
 
         player.CheckIfShouldFlip(xInput);
 
@@ -38,7 +34,7 @@ public class PlayerJumpState : PlayerGroundedState
 
         if (player.CurrentVelocity.y < 0)
         {
-            playerStateMachine.ChangeState(player.FallState);
+            stateMachine.ChangeState(player.fallState);
         }
     }
 

@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerFallState : PlayerState
+public class PlayerFallState : State
 {
     protected int xInput;
-    public PlayerFallState(Player player, PlayerStateMachine playerStateMachine, string animBoolName) : base(player, playerStateMachine, animBoolName)
+
+    private Player player => (Player)entity;
+    public PlayerFallState(Player player, StateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
 
-    }
-
-    public override void DoChecks()
-    {
-        base.DoChecks();
     }
 
     public override void Enter()
@@ -29,7 +26,7 @@ public class PlayerFallState : PlayerState
     {
         base.LogicUpdate();
 
-        xInput = player.InputHandler.NormalizedInputX;
+        xInput = player.inputHandler.NormalizedInputX;
 
         player.CheckIfShouldFlip(xInput);
 
@@ -37,8 +34,8 @@ public class PlayerFallState : PlayerState
 
         if (player.CheckIfTouchingGround())
         {
-            player.InputHandler.UseJumpInput();
-            playerStateMachine.ChangeState(player.IdleState);
+            player.inputHandler.UseJumpInput();
+            stateMachine.ChangeState(player.idleState);
         }
 
         

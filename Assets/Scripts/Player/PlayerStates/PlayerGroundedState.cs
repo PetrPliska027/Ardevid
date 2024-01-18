@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerGroundedState : PlayerState
+public class PlayerGroundedState : State
 {
     protected int xInput;
     protected bool jumpPressed;
-    public PlayerGroundedState(Player player, PlayerStateMachine playerStateMachine, string animNameBool) : base(player, playerStateMachine, animNameBool)
+
+    private Player player => (Player)entity;
+    public PlayerGroundedState(Player player, StateMachine stateMachine, string animNameBool) : base(player, stateMachine, animNameBool)
     {
         
     }
@@ -24,29 +26,24 @@ public class PlayerGroundedState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        
+        xInput = player.inputHandler.NormalizedInputX;
 
-        xInput = player.InputHandler.NormalizedInputX;
-
-        jumpPressed = player.InputHandler.JumpInput;
+        jumpPressed = player.inputHandler.JumpInput;
   
         if(jumpPressed && player.CheckIfTouchingGround()) 
         {
-            player.InputHandler.UseJumpInput();
-            playerStateMachine.ChangeState(player.JumpState);
+            player.inputHandler.UseJumpInput();
+            stateMachine.ChangeState(player.jumpState);
         }
         else if (!player.CheckIfTouchingGround())
         {
-            playerStateMachine.ChangeState(player.FallState);
+            stateMachine.ChangeState(player.fallState);
         }
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-    }
-
-    public override void DoChecks()
-    {
-        base.DoChecks();
     }
 }
