@@ -47,26 +47,21 @@ public class Elevator : MonoBehaviour, IInteractable
         }
     }
 
-    public void StartElevator()
+    public void ElevatorOn(bool isElevatorOn)
     {
-        splineFollower.follow = true;
-    }
-
-    public void StopElevator()
-    {
-        splineFollower.follow = false;
+        splineFollower.follow = isElevatorOn;
     }
 
     public void MoveElevatorUp()
     {
         splineFollower.direction = Spline.Direction.Forward;
-        StartElevator();
+        ElevatorOn(true);
     }
 
     public void MoveElevatorDown()
     {
         splineFollower.direction = Spline.Direction.Backward;
-        StartElevator();
+        ElevatorOn(true);
     }
 
     public void Interact()

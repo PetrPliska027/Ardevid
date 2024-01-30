@@ -10,6 +10,7 @@ public class PlayerInputHandler : MonoBehaviour
     public int NormalizedInputY { get; private set; }
     public bool JumpInput { get; private set; }
     public bool InteractInput { get; private set; }
+    public bool AttackInput { get; private set; }
 
     public void OnMoveInput(InputAction.CallbackContext context)
     {
@@ -38,4 +39,14 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     public void UseInteractInput() => InteractInput = false;
+
+    public void OnAttackInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            AttackInput = true;
+        }
+    }
+
+    public void UseAttackInput() => AttackInput = false;
 }

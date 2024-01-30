@@ -13,7 +13,6 @@ public class PlayerJumpState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
-
         player.SetVelocityY(player.jumpVelocity);
     }
 

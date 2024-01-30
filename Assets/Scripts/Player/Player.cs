@@ -8,11 +8,21 @@ public class Player : Entity
     public PlayerMoveState moveState { get; private set; }
     public PlayerJumpState jumpState { get; private set; }
     public PlayerFallState fallState { get; private set; }
+    public PlayerSlashState slashState { get; private set; }
+    public PlayerStabState stabState { get; private set; }
+    public PlayerSlamState slamState { get; private set; }
 
     public float moveVelocity = 10f;
     public float jumpVelocity = 10f;
 
+    public float attackDamage = 25f;
+    public float timeToNextAttack = 0.7f;
+
     public PlayerInputHandler inputHandler { get; private set; }
+
+    public Transform attackPoint;
+    public float attackRange = 5f;
+    public int indexAttackAnim;
 
     [Header("Ground System")]
     [SerializeField] private Transform groundedCheck;
@@ -27,6 +37,9 @@ public class Player : Entity
         moveState = new PlayerMoveState(this, stateMachine, "move");
         jumpState = new PlayerJumpState(this, stateMachine, "jump");
         fallState = new PlayerFallState(this, stateMachine, "fall");
+        slashState = new PlayerSlashState(this, stateMachine, "attack1");
+        stabState = new PlayerStabState(this, stateMachine, "attack2");
+        slamState = new PlayerSlamState(this, stateMachine, "attack3");
     }
 
     public override void Start()
@@ -72,5 +85,7 @@ public class Player : Entity
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(groundedCheck.position, groundedCheckScale);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }

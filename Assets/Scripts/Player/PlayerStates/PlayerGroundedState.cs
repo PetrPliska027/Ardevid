@@ -6,7 +6,7 @@ public class PlayerGroundedState : State
 {
     protected int xInput;
     protected bool jumpPressed;
-
+    protected bool attackPressed;
     private Player player => (Player)entity;
     public PlayerGroundedState(Player player, StateMachine stateMachine, string animNameBool) : base(player, stateMachine, animNameBool)
     {
@@ -30,6 +30,8 @@ public class PlayerGroundedState : State
         xInput = player.inputHandler.NormalizedInputX;
 
         jumpPressed = player.inputHandler.JumpInput;
+
+        attackPressed = player.inputHandler.AttackInput;
   
         if(jumpPressed && player.CheckIfTouchingGround()) 
         {
@@ -39,6 +41,12 @@ public class PlayerGroundedState : State
         else if (!player.CheckIfTouchingGround())
         {
             stateMachine.ChangeState(player.fallState);
+        }
+        
+        if (attackPressed && player.CheckIfTouchingGround())
+        {
+            player.inputHandler.UseAttackInput();
+            stateMachine.ChangeState(player.slashState);
         }
     }
 
