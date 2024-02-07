@@ -410,8 +410,12 @@ MonoBehaviour:
   moveVelocity: 10
   jumpVelocity: 12
   attackDamage: 25
+  timeToNextAttack: 0.7
   attackPoint: {fileID: 2421387476218617525}
   attackRange: 1
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 256
   groundedCheck: {fileID: 8645899841946968032}
   groundedCheckScale: {x: 0.75, y: 0.15}
   groundMask:

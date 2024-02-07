@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 
-public class PlayerSlashState : PlayerGroundedState
+public class PlayerSlashState : State
 {
+    protected bool attackPressed;
     private Player player => (Player)entity;
     public PlayerSlashState(Player player, StateMachine stateMachine, string animNameBool) : base(player, stateMachine, animNameBool)
     {
@@ -14,7 +15,6 @@ public class PlayerSlashState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
-
     }
 
     public override void Exit()
@@ -25,16 +25,21 @@ public class PlayerSlashState : PlayerGroundedState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
+        player.SetVelocityX(0);
         attackPressed = player.inputHandler.AttackInput;
-
-        if (attackPressed && Time.time - startTime <= player.timeToNextAttack)
+        if (Time.time - startTime >= player.anim.GetCurrentAnimatorStateInfo(0).length)
+        {
+            stateMachine.ChangeState(player.idleState);
+        }
+        else if (attackPressed && Time.time - startTime <= player.timeToNextAttack)
         {
             player.inputHandler.UseAttackInput();
-            stateMachine.ChangeState(player.stabState);
+            if (startTime >= player.anim.GetCurrentAnimatorStateInfo(0).length)
+            {
+                stateMachine.ChangeState(player.stabState);
+            }
+                
         }
-
-        stateMachine.ChangeState(player.idleState);
     }
 
     public override void PhysicsUpdate()

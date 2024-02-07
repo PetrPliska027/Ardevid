@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d71a3293853ef1445932db5f5c7f4c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 100
   workspace: {x: 0, y: 0}
   moveVelocity: 6
   idleTime: 0
@@ -207,6 +208,15 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 256
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  alertRadius: 5
+  agroRadius: 7
+  attackRadius: 0.5
 --- !u!1 &4695069852165778133
 GameObject:
   m_ObjectHideFlags: 0

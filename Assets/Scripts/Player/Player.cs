@@ -22,7 +22,7 @@ public class Player : Entity
 
     public Transform attackPoint;
     public float attackRange = 5f;
-    public int indexAttackAnim;
+    public LayerMask enemyMask;
 
     [Header("Ground System")]
     [SerializeField] private Transform groundedCheck;

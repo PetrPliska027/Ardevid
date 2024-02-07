@@ -25,13 +25,17 @@ public class EnemyMoveState : State
     {
         base.LogicUpdate();
 
-        if(!enemy.CheckCliff())
+        if(enemy.CheckCliff())
         {
             enemy.stateMachine.ChangeState(enemy.idleState);
         }
         else if (enemy.CheckWall())
         {
             enemy.stateMachine.ChangeState(enemy.idleState);
+        }
+        if (enemy.CheckPlayer())
+        {
+            stateMachine.ChangeState(enemy.alertState);
         }
     }
 

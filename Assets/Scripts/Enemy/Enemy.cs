@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : Entity
@@ -8,6 +9,10 @@ public class Enemy : Entity
     // Add States
     public EnemyIdleState idleState { get; private set; }
     public EnemyMoveState moveState { get; private set; }
+    public EnemyAlertState alertState { get; private set; }
+    public EnemyChaseState chaseState { get; private set; }
+    public EnemyAttack1State attack1State { get; private set; }
+    public EnemyAttack2State attack2State { get; private set; }
 
     public float moveVelocity = 10f;
     public float idleTime;
@@ -20,6 +25,13 @@ public class Enemy : Entity
     [SerializeField] private float wallCheckDistance;
     [SerializeField] private LayerMask groundMask;
 
+    [SerializeField] LayerMask enemyMask;
+    [SerializeField] LayerMask playerMask;
+    [SerializeField] float agroRadius = 7;
+    [SerializeField] float attackRadius = 0.5f;
+
+    public Transform playerTransform;
+
     public override void Awake()
     {
         base.Awake();
@@ -27,6 +39,10 @@ public class Enemy : Entity
         // Add States
         idleState = new EnemyIdleState(this, stateMachine, "idle");
         moveState = new EnemyMoveState(this, stateMachine, "move");
+        alertState = new EnemyAlertState(this, stateMachine, "idle");
+        chaseState = new EnemyChaseState(this, stateMachine, "move");
+        attack1State = new EnemyAttack1State(this, stateMachine, "attack1");
+        attack2State = new EnemyAttack2State(this, stateMachine, "attack2");
     }
 
     public override void Start()
@@ -34,6 +50,8 @@ public class Enemy : Entity
         base.Start();
 
         stateMachine.Initialize(moveState);
+
+        playerTransform = FindObjectOfType<Player>().GetComponent<Transform>();
     }
     public override void Update()
     {
@@ -62,7 +80,17 @@ public class Enemy : Entity
 
     public bool CheckCliff()
     {
-        return Physics2D.Raycast(wallCheck.position, Vector2.down, wallCheckDistance, groundMask);
+        return !Physics2D.Raycast(wallCheck.position, Vector2.down, wallCheckDistance, groundMask);
+    }
+
+    public bool CheckPlayer()
+    {
+        return Physics2D.Raycast(transform.position, transform.right, agroRadius, playerMask);
+    }
+
+    public bool CheckIfPlayerInAttackRange()
+    {
+        return Physics2D.OverlapCircle(transform.position, attackRadius, playerMask);
     }
 
     public void SetRandomIdleTime()
