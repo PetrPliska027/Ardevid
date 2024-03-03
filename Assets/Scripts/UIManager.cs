@@ -6,7 +6,7 @@ public class UIManager : MonoBehaviour
 {
     private void OnEnable()
     {
-        Health.OnHPUpdated += UpdateHPBar;
+        
     }
 
     private void UpdateHPBar(Health target)

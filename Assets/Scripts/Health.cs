@@ -4,32 +4,74 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    private float maxHealth = 100f;
-    private float currentHealth;
+    public delegate void HealthEvent(Health target, float damage, GameObject attacker);
+    public delegate void DieAction(Health target, GameObject attacker);
 
-    public bool isPlayer;
+    [SerializeField]
+    private float _totalHP = 100f;
+    [SerializeField]
+    private float _HP;
 
-    public float CurrentHealth
+    public enum Team
     {
-        get { return currentHealth; }
-        set { currentHealth = value; }
+        playerTeam,
+        enemyTeam
+    }
+    public Team team;
+
+    public virtual float TotalHP
+    {
+        get 
+        {
+            return _totalHP;
+        }
+        set 
+        {
+            _totalHP = value;
+        }
+    }
+    public virtual float HP
+    {
+        get 
+        {
+            return _HP;
+        }
+        set 
+        {
+            _HP = Mathf.Clamp(value, 0, _totalHP);
+        }
     }
 
-    public delegate void HPUpdated(Health target);
-    public static event HPUpdated OnHPUpdated;
+    public static event HealthEvent OnDamaged;
+    public event DieAction OnDie;
 
     private void Awake()
+
     {
         InitHP();
     }
-
-    private void InitHP()
+    public virtual void OnEnable()
     {
-        CurrentHealth = maxHealth;
+        
+    }
+    
+    public virtual void InitHP()
+    {
+        _HP = _totalHP;
     }
 
-    public void Health_HPUpdated()
+    public virtual void OnDisable()
     {
-        OnHPUpdated?.Invoke(this);
+        
+    }
+
+    public virtual void DealDamage(float damage, GameObject attacker)
+    {
+        HP -= damage;
+        OnDamaged?.Invoke(this, damage, attacker);
+        if (HP <= 0)
+        {
+            OnDie?.Invoke(this, attacker);
+        }
     }
 }

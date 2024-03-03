@@ -15,6 +15,7 @@ public class PlayerSlamState : State
     public override void Enter()
     {
         base.Enter();
+        player.Attack();
     }
 
     public override void Exit()

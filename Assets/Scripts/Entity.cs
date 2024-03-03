@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Health))]
 public class Entity : MonoBehaviour
 {
     public StateMachine stateMachine;
+
+    public Health health;
 
     public int facingDirection { get; private set; }
     public Rigidbody2D rb { get; private set; }
@@ -18,13 +21,14 @@ public class Entity : MonoBehaviour
     public virtual void Awake()
     {
         stateMachine = new StateMachine();
+
+        health = GetComponent<Health>();
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     public virtual void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-
         facingDirection = 1;
     }
 
@@ -63,15 +67,5 @@ public class Entity : MonoBehaviour
     {
         facingDirection *= -1;
         transform.Rotate(0.0f, 180.0f, 0.0f);
-    }
-
-    public void TakeDamage(float damage)
-    {
-
-    }
-
-    public virtual void Die()
-    {
-        
     }
 }

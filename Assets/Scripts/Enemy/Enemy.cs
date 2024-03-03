@@ -13,6 +13,9 @@ public class Enemy : Entity
     public EnemyChaseState chaseState { get; private set; }
     public EnemyAttack1State attack1State { get; private set; }
     public EnemyAttack2State attack2State { get; private set; }
+    public EnemyDeathState deathState { get; private set; }
+
+    private Health enemyHealth;
 
     public float moveVelocity = 10f;
     public float idleTime;
@@ -25,12 +28,13 @@ public class Enemy : Entity
     [SerializeField] private float wallCheckDistance;
     [SerializeField] private LayerMask groundMask;
 
-    [SerializeField] LayerMask enemyMask;
     [SerializeField] LayerMask playerMask;
     [SerializeField] float agroRadius = 7;
     [SerializeField] float attackRadius = 0.5f;
+    [SerializeField] Vector2 attackPosition;
+    [SerializeField] float damage;
 
-    public Transform playerTransform;
+    [HideInInspector] public Transform playerTransform;
 
     public override void Awake()
     {
@@ -43,6 +47,9 @@ public class Enemy : Entity
         chaseState = new EnemyChaseState(this, stateMachine, "move");
         attack1State = new EnemyAttack1State(this, stateMachine, "attack1");
         attack2State = new EnemyAttack2State(this, stateMachine, "attack2");
+        deathState = new EnemyDeathState(this, stateMachine, "death");
+
+        enemyHealth = GetComponent<Health>();
     }
 
     public override void Start()
@@ -53,6 +60,17 @@ public class Enemy : Entity
 
         playerTransform = FindObjectOfType<Player>().GetComponent<Transform>();
     }
+
+    private void OnEnable()
+    {
+        health.OnDie += OnDie;
+    }
+
+    private void OnDisable()
+    {
+        health.OnDie -= OnDie;
+    }
+
     public override void Update()
     {
         base.Update();
@@ -98,11 +116,33 @@ public class Enemy : Entity
         idleTime = Random.Range(idleTimeMin, idleTimeMax);
     }
 
+    public void Attack()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll((transform.position + (Vector3)(attackPosition * facingDirection)), attackRadius);
+        foreach (Collider2D collider in colliders)
+        {
+            Health health = collider.GetComponent<Health>();
+            if (enemyHealth != null && enemyHealth.team != health.team)
+            {
+                Debug.Log($"{name} attacked {health.name} with {damage} damage!");
+                health.DealDamage(damage, gameObject);
+            }  
+        }
+    }
+
+    private void OnDie(Health target, GameObject attacker)
+    {
+        stateMachine.ChangeState(deathState);
+        Destroy(gameObject, 2f);
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(wallCheck.position, wallCheck.position + (Vector3)(Vector2.right * facingDirection * wallCheckDistance));
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(cliffCheck.position, cliffCheck.position + (Vector3)(Vector2.down * cliffCheckDistance));
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere((transform.position + (Vector3)(attackPosition * facingDirection)), attackRadius);
     }
 }

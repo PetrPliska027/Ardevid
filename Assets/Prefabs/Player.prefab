@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3035399276651159604}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.83, y: 0.53, z: 0}
+  m_LocalPosition: {x: 0.83, y: 0.64, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -78,8 +78,9 @@ GameObject:
   - component: {fileID: 8645899843013226015}
   - component: {fileID: 397380708803161207}
   - component: {fileID: 9021876489344102907}
+  - component: {fileID: 3068358404584846406}
   m_Layer: 7
-  m_Name: Ardevid (Player)
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -405,19 +406,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48287c808ae59a04aaf0e3b4de9a0a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: {fileID: 0}
   workspace: {x: 0, y: 0}
   moveVelocity: 10
   jumpVelocity: 12
-  attackDamage: 25
-  timeToNextAttack: 0.7
   attackPoint: {fileID: 2421387476218617525}
-  attackRange: 1
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 256
+  attackRadius: 0.5
+  timeToNextAttack: 0.7
+  damage: 25
   groundedCheck: {fileID: 8645899841946968032}
   groundedCheckScale: {x: 0.75, y: 0.15}
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &3068358404584846406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8645899843013226017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7f08c8dd98f27f47bcbdee8e0fe1dba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _totalHP: 200
+  _HP: 0
+  team: 0

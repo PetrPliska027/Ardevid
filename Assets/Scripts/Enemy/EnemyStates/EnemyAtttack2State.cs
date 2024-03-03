@@ -14,6 +14,8 @@ public class EnemyAttack2State : State
     public override void Enter()
     {
         base.Enter();
+        enemy.SetVelocityX(0);
+        enemy.Attack();
     }
 
     public override void Exit()

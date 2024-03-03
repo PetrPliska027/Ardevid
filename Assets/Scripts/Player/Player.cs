@@ -11,23 +11,39 @@ public class Player : Entity
     public PlayerSlashState slashState { get; private set; }
     public PlayerStabState stabState { get; private set; }
     public PlayerSlamState slamState { get; private set; }
+    public PlayerDeathState deathState { get; private set; }
 
+    private Health playerHealth;
+
+    [Header("Movement Settings")]
     public float moveVelocity = 10f;
     public float jumpVelocity = 10f;
 
-    public float attackDamage = 25f;
-    public float timeToNextAttack = 0.7f;
-
     public PlayerInputHandler inputHandler { get; private set; }
 
-    public Transform attackPoint;
-    public float attackRange = 5f;
-    public LayerMask enemyMask;
+    [Header("Attack Settings")]
+    [SerializeField]
+    private Transform attackPoint;
+    [SerializeField]
+    private float attackRadius = 5f;
+    public float timeToNextAttack = 0.7f;
+    [SerializeField]
+    private float damage = 25f;
 
     [Header("Ground System")]
     [SerializeField] private Transform groundedCheck;
     [SerializeField] private Vector2 groundedCheckScale;
     [SerializeField] private LayerMask groundMask;
+
+    private void OnEnable()
+    {
+        playerHealth.OnDie += OnDie;
+    }
+
+    private void OnDisable()
+    {
+        playerHealth.OnDie -= OnDie;
+    }
 
     public override void Awake()
     {
@@ -40,13 +56,15 @@ public class Player : Entity
         slashState = new PlayerSlashState(this, stateMachine, "attack1");
         stabState = new PlayerStabState(this, stateMachine, "attack2");
         slamState = new PlayerSlamState(this, stateMachine, "attack3");
+        deathState = new PlayerDeathState(this, stateMachine, "death");
+
+        playerHealth = GetComponent<Health>();
+        inputHandler = GetComponent<PlayerInputHandler>();
     }
 
     public override void Start()
     {
         base.Start();
-
-        inputHandler = GetComponent<PlayerInputHandler>();
 
         stateMachine.Initialize(idleState);
     }
@@ -81,11 +99,32 @@ public class Player : Entity
         return Physics2D.OverlapBox(groundedCheck.position, groundedCheckScale, 0, groundMask);
     }
 
+    public void Attack()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius);
+        foreach (Collider2D collider in colliders)
+        {
+            Health health = collider.GetComponent<Health>();
+            if (health != null && playerHealth.team != health.team)
+            {
+                Debug.Log($"{name} attacked {health.name} with {damage} damage!");
+                health.DealDamage(damage, gameObject);
+            }
+        }
+    }
+
+    private void OnDie(Health target, GameObject attacker)
+    {
+        Debug.Log($"{name} died");
+        this.enabled = false;
+        stateMachine.ChangeState(deathState);
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(groundedCheck.position, groundedCheckScale);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
     }
 }
