@@ -11,6 +11,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool JumpInput { get; private set; }
     public bool InteractInput { get; private set; }
     public bool AttackInput { get; private set; }
+    public bool EscapeInput { get; private set; }
 
     public void OnMoveInput(InputAction.CallbackContext context)
     {
@@ -49,4 +50,16 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     public void UseAttackInput() => AttackInput = false;
+
+    public void OnEscapeInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            EscapeInput = true;
+        }
+        if (context.canceled)
+        {
+            EscapeInput = false;
+        }
+    }   
 }

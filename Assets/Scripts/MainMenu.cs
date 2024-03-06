@@ -1,18 +1,42 @@
+using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : UISubmenuBase
 {
-    [SerializeField] private string gameSceneName = "Game";
+    public Action OnPlayButtonPressed;
 
-    public void StartGame()
+    [Header("Buttons")]
+    [SerializeField]
+    private Button _playButton;
+
+    [SerializeField]
+    private Button _settingsButton;
+
+    [SerializeField]
+    private Button _quitButton;
+
+    private void Start()
     {
-        SceneManager.LoadScene(gameSceneName);
+        _playButton.onClick.AddListener(OnPlayButtonClicked);
+        _settingsButton.onClick.AddListener(OnSettingsButtonClicked);
+        _quitButton.onClick.AddListener(OnQuitButtonClicked);
     }
 
-    public void QuiGame()
+    private void OnPlayButtonClicked()
     {
-        Debug.Log("Exit");
+        OnPlayButtonPressed?.Invoke();
+    }
+
+    private void OnSettingsButtonClicked()
+    {
+        Push(MonoSingleton<UIManager>.Instance.SettingsMenuControllerTemplate);
+    }
+
+    private void OnQuitButtonClicked()
+    {
         Application.Quit();
+        Debug.Log("Quit");
     }
 }
