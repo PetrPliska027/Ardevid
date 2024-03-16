@@ -9,6 +9,16 @@ public abstract class UIMenuBase : MonoBehaviour
 {
     public static readonly List<UIMenuBase> ActiveMenus = new List<UIMenuBase>();
 
+    public Action OnShow;
+    public Action OnShown;
+    public Action OnHide;
+    public Action OnFirstMenuShow;
+    public Action OnFirstMenuShown;
+    public Action OnShownCompleted;
+
+    [SerializeField]
+    protected Animator _animator;
+
     [SerializeField]
     protected CanvasGroup _canvasGroup;
 
@@ -16,8 +26,8 @@ public abstract class UIMenuBase : MonoBehaviour
     protected virtual bool _addToActiveMenus => true;
     protected virtual bool _releaseOnHide => false;
 
-    public bool IsShowing { get; private set; } 
     public bool IsHiding { get; private set; }
+    public bool IsShowing { get; private set; } 
 
     public CanvasGroup CanvasGroup => _canvasGroup;
     public Canvas Canvas => _canvas;
@@ -39,7 +49,7 @@ public abstract class UIMenuBase : MonoBehaviour
             {
                 if (ActiveMenus.Count > 0)
                 {
-                    _canvas.sortingOrder = ActiveMenus[ActiveMenus.Count - 1]._canvas.sortingOrder + 1;
+                    _canvas.sortingOrder = ActiveMenus.LastElement()._canvas.sortingOrder + 1;
                 }
                 else
                 {
@@ -52,7 +62,7 @@ public abstract class UIMenuBase : MonoBehaviour
         }
     }
 
-    public void Show()
+    public void Show(bool immediate = false)
     {
         IsShowing = true;
         if (_addToActiveMenus && _canvas != null && !ActiveMenus.Contains(this))
@@ -60,7 +70,82 @@ public abstract class UIMenuBase : MonoBehaviour
             ActiveMenus.Add(this);
             UpdateSortingOrder();
         }
-        gameObject.SetActive(true);
+        base.gameObject.SetActive(value: true);
+        if (immediate)
+        {
+            if(_animator != null)
+            {
+                //_animator.Play("Shown");
+            }
+            else
+            {
+                _canvasGroup.alpha = 1f;
+            }
+            SetActiveStateForMenu(state: true);
+            OnShowStarted();
+            if (_addToActiveMenus && _canvas != null && ActiveMenus.Count == 1)
+            {
+                OnFirstMenuShow?.Invoke();
+            }
+            OnShow?.Invoke();
+            if (_addToActiveMenus && _canvas != null && ActiveMenus.Count == 1)
+            {
+                OnFirstMenuShow?.Invoke();
+            }
+            OnShown?.Invoke();
+            OnShowCompleted();
+            OnShownCompleted?.Invoke();
+            IsShowing = false;
+        }
+        else
+        {
+            StartCoroutine(DoShow());
+        }
+    }
+
+    protected virtual IEnumerator DoShow()
+    {
+        yield return null;
+        SetActiveStateForMenu(state: true);
+        OnShowStarted();
+        if (_addToActiveMenus && _canvas != null && ActiveMenus.Count == 1)
+        {
+            OnFirstMenuShow?.Invoke();
+        }
+        OnShow?.Invoke();
+        yield return DoShowAnimation();
+        if (_addToActiveMenus && _canvas != null && ActiveMenus.Count == 1)
+        {
+            OnFirstMenuShown?.Invoke();
+        }
+        OnShown?.Invoke();
+        OnShowCompleted();
+        OnShownCompleted?.Invoke();
+        IsShowing = false;
+    }
+
+    protected virtual IEnumerator DoShowAnimation()
+    {
+        if (_animator != null)
+        {
+            yield return _animator.YieldForAnimation("Show");
+            yield break;
+        }
+        while (_canvasGroup.alpha < 1f)
+        {
+            _canvasGroup.alpha += Time.unscaledDeltaTime * 10f;
+            yield return null;
+        }
+    }
+
+    protected virtual void OnShowStarted()
+    {
+        
+    }
+
+    protected virtual void OnShowCompleted()
+    {
+
     }
 
     public virtual T Push<T>(T menu) where T : UIMenuBase
@@ -72,20 +157,20 @@ public abstract class UIMenuBase : MonoBehaviour
 
     public virtual T PushInstance<T>(T menu) where T : UIMenuBase
     {
-        SetActiveForMenu(state: false);
+        SetActiveStateForMenu(state: false);
         return menu;
     }
 
-    protected virtual void SetActiveForMenu(bool state)
+    protected virtual void SetActiveStateForMenu(bool state)
     {
         if (_canvasGroup != null)
         {
             _canvasGroup.interactable = state;
-            SetActiveForMenu(gameObject, state);
+            SetActiveStateForMenu(gameObject, state);
         }
     }
 
-    protected virtual void SetActiveForMenu(GameObject target, bool state)
+    protected virtual void SetActiveStateForMenu(GameObject target, bool state)
     {
         Selectable[] componentsInChildren = target.GetComponentsInChildren<Selectable>();
         for (int i = 0; i < componentsInChildren.Length; i++)
