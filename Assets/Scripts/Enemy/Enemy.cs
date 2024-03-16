@@ -36,6 +36,8 @@ public class Enemy : Entity
 
     [HideInInspector] public Transform playerTransform;
 
+    [SerializeField] private GameObject XPOrbPrefab;
+
     public override void Awake()
     {
         base.Awake();
@@ -133,6 +135,7 @@ public class Enemy : Entity
     private void OnDie(Health target, GameObject attacker)
     {
         stateMachine.ChangeState(deathState);
+        Instantiate(XPOrbPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject, 2f);
     }
 

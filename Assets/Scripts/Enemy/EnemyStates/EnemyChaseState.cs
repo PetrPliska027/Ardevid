@@ -35,14 +35,12 @@ public class EnemyChaseState : State
 
         enemy.SetVelocityX(direction * enemy.moveVelocity);
 
-        if (enemy.CheckIfPlayerInAttackRange())
+        if (enemy.CheckIfPlayerInAttackRange() && stateMachine.currentState != enemy.deathState)
         {
             stateMachine.ChangeState(enemy.attack1State);
         }
         else if (enemy.CheckCliff() || enemy.CheckWall()) 
         {
-            Debug.Log("dw"+enemy.CheckCliff());
-            Debug.Log(enemy.CheckWall());
             stateMachine.ChangeState(enemy.moveState);
         }
         

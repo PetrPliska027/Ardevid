@@ -99,7 +99,7 @@ Transform:
   - {fileID: 343614341570069728}
   - {fileID: 388549694484631587}
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1707888595978744486
 SpriteRenderer:
@@ -279,6 +279,7 @@ MonoBehaviour:
   attackPosition: {x: 0.9, y: 0}
   damage: 50
   playerTransform: {fileID: 0}
+  XPOrbPrefab: {fileID: 7943962597511219380, guid: 0daa6a827ea090f4a876d9e169a02dba, type: 3}
 --- !u!114 &4626200710114079596
 MonoBehaviour:
   m_ObjectHideFlags: 0

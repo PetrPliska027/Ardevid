@@ -14,6 +14,7 @@ public class EnemyDeathState : State
     {
         base.Enter();
         enemy.SetVelocityX(0);
+        enemy.GetComponent<Collider2D>().enabled = false;
     }
 
     public override void Exit()

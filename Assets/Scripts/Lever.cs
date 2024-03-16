@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Button : MonoBehaviour, IInteractable
+public class Lever : MonoBehaviour
 {
     [SerializeField] private List<GameObject> interactablesGameObjects;
     protected Player player;
