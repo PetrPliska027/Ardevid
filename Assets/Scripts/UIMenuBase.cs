@@ -10,14 +10,6 @@ public abstract class UIMenuBase : MonoBehaviour
     public static readonly List<UIMenuBase> ActiveMenus = new List<UIMenuBase>();
 
     public Action OnShow;
-    public Action OnShown;
-    public Action OnHide;
-    public Action OnFirstMenuShow;
-    public Action OnFirstMenuShown;
-    public Action OnShownCompleted;
-
-    [SerializeField]
-    protected Animator _animator;
 
     [SerializeField]
     protected CanvasGroup _canvasGroup;
@@ -62,85 +54,59 @@ public abstract class UIMenuBase : MonoBehaviour
         }
     }
 
-    public void Show(bool immediate = false)
+    public void Show()
     {
+        if (IsShowing || IsHiding)
+        {
+            return;
+        }
+
         IsShowing = true;
-        if (_addToActiveMenus && _canvas != null && !ActiveMenus.Contains(this))
+        IsHiding = false;
+
+        if (_addToActiveMenus)
         {
             ActiveMenus.Add(this);
-            UpdateSortingOrder();
         }
-        base.gameObject.SetActive(value: true);
-        if (immediate)
-        {
-            if(_animator != null)
-            {
-                //_animator.Play("Shown");
-            }
-            else
-            {
-                _canvasGroup.alpha = 1f;
-            }
-            SetActiveStateForMenu(state: true);
-            OnShowStarted();
-            if (_addToActiveMenus && _canvas != null && ActiveMenus.Count == 1)
-            {
-                OnFirstMenuShow?.Invoke();
-            }
-            OnShow?.Invoke();
-            if (_addToActiveMenus && _canvas != null && ActiveMenus.Count == 1)
-            {
-                OnFirstMenuShow?.Invoke();
-            }
-            OnShown?.Invoke();
-            OnShowCompleted();
-            OnShownCompleted?.Invoke();
-            IsShowing = false;
-        }
-        else
-        {
-            StartCoroutine(DoShow());
-        }
-    }
 
-    protected virtual IEnumerator DoShow()
-    {
-        yield return null;
+        if (_canvasGroup != null)
+        {
+            _canvasGroup.alpha = 1;
+        }
+
         SetActiveStateForMenu(state: true);
         OnShowStarted();
-        if (_addToActiveMenus && _canvas != null && ActiveMenus.Count == 1)
-        {
-            OnFirstMenuShow?.Invoke();
-        }
         OnShow?.Invoke();
-        yield return DoShowAnimation();
-        if (_addToActiveMenus && _canvas != null && ActiveMenus.Count == 1)
-        {
-            OnFirstMenuShown?.Invoke();
-        }
-        OnShown?.Invoke();
         OnShowCompleted();
-        OnShownCompleted?.Invoke();
-        IsShowing = false;
+        
     }
 
-    protected virtual IEnumerator DoShowAnimation()
+    public void Hide()
     {
-        if (_animator != null)
+        if (IsHiding || !IsShowing)
         {
-            yield return _animator.YieldForAnimation("Show");
-            yield break;
+            return;
         }
-        while (_canvasGroup.alpha < 1f)
+
+        IsHiding = true;
+        IsShowing = false;
+
+        if (_releaseOnHide)
         {
-            _canvasGroup.alpha += Time.unscaledDeltaTime * 10f;
-            yield return null;
+            ActiveMenus.Remove(this);
         }
+
+        if (_canvasGroup != null)
+        {
+            _canvasGroup.alpha = 0;
+        }
+
+        SetActiveStateForMenu(state: false);
     }
 
     protected virtual void OnShowStarted()
     {
-        
+
     }
 
     protected virtual void OnShowCompleted()
