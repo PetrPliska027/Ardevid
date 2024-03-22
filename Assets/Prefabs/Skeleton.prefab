@@ -264,6 +264,7 @@ MonoBehaviour:
   idleTime: 0
   idleTimeMin: 1
   idleTimeMax: 3
+  alerTime: 0.3
   cliffCheck: {fileID: 388549694484631587}
   wallCheck: {fileID: 343614341570069728}
   cliffCheckDistance: 0.12

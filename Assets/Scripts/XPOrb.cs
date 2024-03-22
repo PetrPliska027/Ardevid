@@ -11,11 +11,6 @@ public class XPOrb : MonoBehaviour
 
     public static event XPAction OnXPGet;
 
-    private void Start()
-    {
-        _XPValue = Random.Range(100, 300);
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.TryGetComponent(out Player player))

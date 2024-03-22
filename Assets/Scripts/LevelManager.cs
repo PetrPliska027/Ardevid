@@ -76,6 +76,8 @@ public class LevelManager : MonoBehaviour
     {
         XP -= ExpereinceToNextLevel;
         ExpereinceToNextLevel += Mathf.FloorToInt(ExpereinceToNextLevel * 1.3f);
+        Instantiate(Resources.Load("LevelUpVFX"), transform.position, Quaternion.identity);
+        Destroy(GameObject.Find("LevelUpVFX(Clone)"), 2f);
         Level++;
         SkillPoints += 2;
     }

@@ -18,9 +18,10 @@ public class Enemy : Entity
     private Health enemyHealth;
 
     public float moveVelocity = 10f;
-    public float idleTime;
+    [HideInInspector] public float idleTime;
     [SerializeField] private float idleTimeMin = 1f;
     [SerializeField] private float idleTimeMax = 3f;
+    public float alertTime = 3f;
 
     [SerializeField] private Transform cliffCheck;
     [SerializeField] private Transform wallCheck;

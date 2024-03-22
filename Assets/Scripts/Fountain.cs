@@ -35,7 +35,7 @@ public class Fountain : MonoBehaviour
             cancelPressed = player.inputHandler.CancelInput;
             xInput = player.inputHandler.NormalizedInputX;
 
-            if (interactPressed)
+            if (interactPressed && resting == false)
             {
                 player.inputHandler.UseInteractInput();
                 OnSkillTreeInteracted?.Invoke();

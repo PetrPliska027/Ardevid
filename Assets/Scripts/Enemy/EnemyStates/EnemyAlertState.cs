@@ -24,7 +24,7 @@ public class EnemyAlertState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if(Time.time - startTime >= 1.2f)
+        if(Time.time - startTime >= enemy.alertTime)
         {
             stateMachine.ChangeState(enemy.chaseState);
         }

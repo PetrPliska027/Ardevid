@@ -102,7 +102,7 @@ Transform:
   - {fileID: 8645899841946968032}
   - {fileID: 2421387476218617525}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8645899843013226013
 SpriteRenderer:
@@ -410,7 +410,7 @@ MonoBehaviour:
   health: {fileID: 0}
   workspace: {x: 0, y: 0}
   moveVelocity: 10
-  jumpVelocity: 12
+  jumpVelocity: 14
   attackPoint: {fileID: 2421387476218617525}
   attackRadius: 0.5
   timeToNextAttack: 0.7
@@ -448,4 +448,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _level: 1
+  _skillPoints: 0
   _XP: 0
+  _expereinceToNextLevel: 100

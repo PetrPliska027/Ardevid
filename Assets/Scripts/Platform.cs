@@ -12,14 +12,14 @@ public class Platform : MonoBehaviour, IInteractable
         splineFollower = GetComponent<SplineFollower>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        collision.transform.SetParent(transform);
+        other.transform.SetParent(transform);
     }
-
-    private void OnCollisionExit2D(Collision2D collision)
+    
+    private void OnTriggerExit2D(Collider2D other)
     {
-        collision.transform.SetParent(null);
+        other.transform.SetParent(null);
     }
 
     public void Interact()
